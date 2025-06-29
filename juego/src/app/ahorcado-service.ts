@@ -40,4 +40,16 @@ export class AhorcadoService {
     if (!acierto) this.errores++;
     return acierto;
   }
+
+  get dibujo(): string {
+    return this.dibujos[Math.min(this.errores, this.dibujos.length - 1)];
+  }
+
+  get juegoTerminado(): boolean {
+    return this.errores >= 6 || this.progreso.join('') === this.palabra;
+  }
+
+  get victoria(): boolean {
+    return this.progreso.join('') === this.palabra;
+  }
 }
