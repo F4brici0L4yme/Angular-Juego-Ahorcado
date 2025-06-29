@@ -25,4 +25,19 @@ export class AhorcadoService {
     this.letrasUsadas = [];
     this.progreso = Array(palabra.length).fill('_');
   }
+
+  adivinar(letra: string): boolean {
+    letra = letra.toLowerCase();
+    if (this.letrasUsadas.includes(letra)) return false;
+    this.letrasUsadas.push(letra);
+    let acierto = false;
+    for (let i = 0; i < this.palabra.length; i++) {
+      if (this.palabra[i] === letra) {
+        this.progreso[i] = letra;
+        acierto = true;
+      }
+    }
+    if (!acierto) this.errores++;
+    return acierto;
+  }
 }
