@@ -1,1 +1,6 @@
-<p>juego-ahorcado works!</p>
+<pre>{{ servicio.dibujo }}</pre>
+<p>Palabra: {{ servicio.progreso.join(' ') }}</p>
+<p>Letras usadas: {{ servicio.letrasUsadas.join(', ') }}</p>
+
+<input [(ngModel)]="letra" maxlength="1" placeholder="Letra" />
+<button (click)="probarLetra()">Probar</button>
