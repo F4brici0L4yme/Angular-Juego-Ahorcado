@@ -1,1 +1,4 @@
-<p>resultado works!</p>
+<h2 *ngIf="servicio.victoria">¡Ganaste! </h2>
+<h2 *ngIf="!servicio.victoria">¡Perdiste! </h2>
+<p>La palabra era: {{ servicio.palabra }}</p>
+<button (click)="reiniciar()">Volver a comenzar</button>
