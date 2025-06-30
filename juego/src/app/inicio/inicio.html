@@ -1,4 +1,301 @@
-<h2>Ingrese la palabra secreta</h2>
-<input [(ngModel)]="palabra" type="password" placeholder="Palabra a adivinar" />
-<br>
-<button (click)="iniciarJuego()">Comenzar</button>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Ahorcados</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fondo animado con partículas */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite"/></circle><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="2s" repeatCount="indefinite"/></circle><circle cx="70" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.3;0.1" dur="5s" repeatCount="indefinite"/></circle></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 3rem 2.5rem;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            text-align: center;
+            position: relative;
+            max-width: 450px;
+            width: 90%;
+            animation: slideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #f0932b, #eb4d4b, #6c5ce7);
+            border-radius: 25px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite alternate;
+            opacity: 0.7;
+        }
+
+        @keyframes borderGlow {
+            0% { filter: blur(5px) brightness(1); }
+            100% { filter: blur(8px) brightness(1.2); }
+        }
+
+        h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(255, 255, 255, 0.1);
+            letter-spacing: 2px;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3); }
+            100% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.5); }
+        }
+
+        h2::after {
+            content: '🎯';
+            position: absolute;
+            top: -10px;
+            right: -30px;
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(0deg); }
+            40% { transform: translateY(-10px) rotate(10deg); }
+            60% { transform: translateY(-5px) rotate(-5deg); }
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: 3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                inset 0 2px 10px rgba(0, 0, 0, 0.1),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                inset 0 2px 10px rgba(0, 0, 0, 0.1),
+                0 0 0 3px rgba(255, 255, 255, 0.3),
+                0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .input-container::after {
+            content: '🔒';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #ff3838 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 10px 25px rgba(255, 107, 107, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .start-button:hover::before {
+            left: 100%;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 15px 35px rgba(255, 107, 107, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #ff5252 0%, #d32f2f 50%, #b71c1c 100%);
+        }
+
+        .start-button:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 
+                0 8px 20px rgba(255, 107, 107, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .start-button::after {
+            content: '🚀';
+            margin-left: 10px;
+            display: inline-block;
+            animation: rocket 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes rocket {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(5px); }
+        }
+
+        /* Efectos adicionales de hover para el contenedor */
+        .game-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .start-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animación de entrada para elementos */
+        .input-container, .start-button {
+            animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation-fill-mode: both;
+        }
+
+        .input-container {
+            animation-delay: 0.2s;
+        }
+
+        .start-button {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h2>Ingrese la palabra secreta</h2>
+        <div class="input-container">
+            <input [(ngModel)]="palabra" type="password" placeholder="Palabra a adivinar" />
+        </div>
+        <button (click)="iniciarJuego()" class="start-button">Comenzar</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    padding: 2rem;
+}
+
+/* Partículas animadas (opcional, puedes comentar si causa errores) */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite"/></circle><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="2s" repeatCount="indefinite"/></circle><circle cx="70" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.3;0.1" dur="5s" repeatCount="indefinite"/></circle></svg>');
+    animation: float 20s infinite linear;
+    z-index: 0;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); }
+    100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+.game-container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(50px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+    position: relative;
+}
+
+h2::after {
+    content: '🎯';
+    position: absolute;
+    top: -10px;
+    right: -25px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.input-password {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    letter-spacing: 3px;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.input-password::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.input-password:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.start-button {
+    background: linear-gradient(135deg, #ff6b6b, #ff3838);
+    color: white;
+    border: none;
+    padding: 1.2rem 3rem;
+    font-size: 1.2rem;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.start-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: linear-gradient(135deg, #ff5252, #b71c1c);
+    box-shadow: 0 15px 35px rgba(255, 107, 107, 0.6);
+}
+
+.start-button::after {
+    content: '🚀';
+    margin-left: 10px;
+    display: inline-block;
+    animation: rocket 1.5s infinite alternate;
+}
+
+@keyframes rocket {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(5px); }
+}
+
+@media (max-width: 480px) {
+    .game-container {
+        padding: 2rem 1rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .start-button {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+}
