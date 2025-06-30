@@ -1,6 +1,223 @@
-<pre>{{ servicio.dibujo }}</pre>
-<p>Palabra: {{ servicio.progreso.join(' ') }}</p>
-<p>Letras usadas: {{ servicio.letrasUsadas.join(', ') }}</p>
+<div class="game-board">
+  <!-- Dibujo del ahorcado -->
+  <div class="drawing-section">
+    <pre class="hangman-drawing">{{ servicio.dibujo }}</pre>
+  </div>
 
-<input [(ngModel)]="letra" maxlength="1" placeholder="Letra" />
-<button (click)="probarLetra()">Probar</button>
+  <!-- Info del juego -->
+  <div class="game-info">
+    <!-- Palabra en progreso -->
+    <div class="word-display">
+      <div class="word-label">Palabra:</div>
+      <div class="word-progress">{{ servicio.progreso.join(' ') }}</div>
+    </div>
+
+    <!-- Letras usadas -->
+    <div class="used-letters">
+      <div class="used-letters-label">Letras usadas:</div>
+      <div class="letters-list">{{ servicio.letrasUsadas.join(', ') }}</div>
+    </div>
+
+    <!-- Entrada de letra -->
+    <div class="input-section">
+      <input class="letter-input" [(ngModel)]="letra" maxlength="1" placeholder="Letra" />
+      <button class="try-button" (click)="probarLetra()">Probar</button>
+    </div>
+  </div>
+</div>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500;700&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  overflow-x: hidden;
+}
+
+.game-board {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.drawing-section {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.hangman-drawing {
+  font-family: 'Fira Code', monospace;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  white-space: pre-wrap;
+  text-align: center;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.word-display {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.word-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.word-progress {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.5rem;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+.used-letters {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 1.5rem;
+}
+
+.used-letters-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.letters-list {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.3rem;
+}
+
+.input-section {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.letter-input {
+  width: 80%;
+  max-width: 300px;
+  padding: 1.2rem;
+  font-size: 1.5rem;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  border: none;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+.letter-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.letter-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4),
+              0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}
+
+.try-button {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 50%, #2980b9 100%);
+  color: white;
+  border: none;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: 'Orbitron', monospace;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.try-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: linear-gradient(135deg, #2980b9 0%, #27ae60 50%, #16a085 100%);
+}
+
+.try-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .game-board {
+    grid-template-columns: 1fr;
+  }
+
+  .hangman-drawing {
+    font-size: 0.9rem;
+    min-height: 200px;
+  }
+
+  .word-progress {
+    font-size: 2rem;
+  }
+
+  .letter-input {
+    font-size: 1.2rem;
+    padding: 1rem;
+  }
+
+  .try-button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+</style>
