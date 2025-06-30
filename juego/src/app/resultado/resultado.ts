@@ -15,4 +15,3 @@ export class Resultado {
     this.router.navigate(['/']);
   }
 }
-

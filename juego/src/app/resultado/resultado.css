@@ -1,61 +1,96 @@
-body {
-    background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-    padding-top: 100px;
-    margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Fredoka+One&display=swap');
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
 }
 
-h2 {
-    font-size: 2.5rem;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 1s ease-in-out;
-}
-
-h2:first-child {
-    color: #464956;
-}
-
-h2:last-child {
-    color: #ff4d4d;
-}
-
-p {
-    font-size: 1.2rem;
-    color: #333;
-    margin: 20px 0;
-}
-
-button {
-    background: linear-gradient(45deg, #00dbde, #fc00ff);
-    border: none;
-    color: white;
-    padding: 15px 30px;
-    font-size: 1rem;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-button:active {
-    transform: scale(0.98);
+/* Contenedor del final */
+.end-game-container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 3rem 2rem;
+  border-radius: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.8s ease-out;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Estilos para victoria */
+.victoria {
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+  animation: victoryPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes victoryPulse {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.1); }
+}
+
+/* Estilos para derrota */
+.derrota {
+  background: linear-gradient(135deg, #232526, #414345, #1e3c72, #2a5298);
+  animation: defeatDarken 3s ease-in-out infinite alternate;
+}
+
+@keyframes defeatDarken {
+  from { filter: brightness(0.9); }
+  to { filter: brightness(0.7); }
+}
+
+/* Título */
+h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* Párrafo */
+p {
+  font-size: 1.5rem;
+  font-family: 'Orbitron', monospace;
+  color: #ffeb3b;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
+}
+
+/* Botón de reinicio */
+button {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ff3838);
+  color: white;
+  border: none;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: 'Orbitron', monospace;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  transform: translateY(-4px) scale(1.05);
+  background: linear-gradient(135deg, #ff5252, #d32f2f, #b71c1c);
+  box-shadow: 0 20px 45px rgba(255, 107, 107, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+button:active {
+  transform: scale(0.98);
 }
